@@ -48,6 +48,23 @@ describe('CoursesService', () => {
     req.flush(COURSES[12]);
   });
 
+  it('should save the course data', () => {
+    const changes = {titles: {description: 'Testing Course'}};
+    coursesService.saveCourse(12, changes)
+      .subscribe(course => {
+        expect(course.id).toBe(12);
+        expect(course.titles.description).toBe('Testing Course');
+      });
+    const req = httpTestingController.expectOne('/api/courses/12');
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body.titles.description).toEqual(changes.titles.description);
+
+    req.flush({
+      ...COURSES[12],
+      ...changes
+    });
+  });
+
   afterEach(() => {
     httpTestingController.verify();
   });
