@@ -1,36 +1,23 @@
-pipeline {
-  agent { dockerfile true }
-
-  environment {
-    CI = true
+node {
+  def app
+  stage('Clone repository') {
+    checkout scm
   }
 
-  stages {
-    stage('Install dependencies') {
-      steps {
+  stage('Build image') {
+    app = docker.build("Dagony/angular-testing-course-1")
+  }
 
-        sh 'npm install --silent'
-        sh 'node --version'
-      }
+  stage('Test image') {
+    app.inside {
+      sh 'echo "Tests passed"'
     }
+  }
 
-
-    stage('Build Angular') {
-      steps {
-        sh 'node_modules/@angular/cli/bin/ng build'
-      }
-    }
-
-    stage('Test Angular') {
-      steps {
-        sh 'node_modules/@angular/cli/bin/ng test'
-      }
-    }
-
-    stage('Test Angular E2E') {
-      steps {
-        sh 'npm run e2e'
-      }
+  stage('Push image') {
+    docker.withRegistry('https://registry.hub.docker.com', 'git') {
+      app.push("${env.BUILD_NUMBER}")
+      app.push("latest")
     }
   }
 }
