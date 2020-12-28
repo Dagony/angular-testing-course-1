@@ -1,8 +1,6 @@
 pipeline {
   agent {
-    any {
-      dir "buildagent"
-    }
+    docker { image 'node:14-alpine' }
   }
 
   environment {
@@ -16,6 +14,7 @@ pipeline {
         sh 'node --version'
       }
     }
+
 
     stage('Build Angular') {
       steps {
