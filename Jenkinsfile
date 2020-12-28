@@ -1,23 +1,27 @@
-node {
-  def app
-  stage('Clone repository') {
-    checkout scm
+pipeline {
+  agent {
+    docker { image: 'node:10-alpine'}
   }
-
-  stage('Build image') {
-    app = docker.build("Dagony/angular-testing-course-1")
-  }
-
-  stage('Test image') {
-    app.inside {
-      sh 'echo "Tests passed"'
+  stages {
+    stage('Restore') {
+      steps {
+        sh 'npm install'
+      }
     }
-  }
-
-  stage('Push image') {
-    docker.withRegistry('https://registry.hub.docker.com', 'git') {
-      app.push("${env.BUILD_NUMBER}")
-      app.push("latest")
+    stage('Build') {
+      steps {
+        sh 'npm run-script build-and-start:prod'
+      }
+    }
+    stage('Unit Test') {
+      steps {
+        sh 'npm run-script test'
+      }
+    }
+    stage('E2E Test') {
+      steps {
+        sh 'npm run-script e2e'
+      }
     }
   }
 }
