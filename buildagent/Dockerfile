@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:7.9.0
 
 RUN apt-get update
 RUN apt-get install -y rsync
