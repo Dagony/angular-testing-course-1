@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    dockerfile {
+    any {
       dir "buildagent"
     }
   }
