@@ -1,7 +1,5 @@
 pipeline {
-  agent {
-    any { image 'node:14-alpine' }
-  }
+  agent { dockerfile true }
 
   environment {
     CI = true
@@ -10,6 +8,7 @@ pipeline {
   stages {
     stage('Install dependencies') {
       steps {
+
         sh 'npm install --silent'
         sh 'node --version'
       }
