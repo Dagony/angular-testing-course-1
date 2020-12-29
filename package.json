@@ -15,7 +15,7 @@
     "build:prod": "ng build --prod",
     "start:prod": "http-server ./dist -a localhost -p 4200 > http-server.log &",
     "build-and-start:prod": "run-s build:prod start:prod",
-    "e2e": "cypress:run"
+    "e2e": "cypress run"
   },
   "private": true,
   "dependencies": {
