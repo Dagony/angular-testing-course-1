@@ -10,6 +10,7 @@ pipeline {
       steps {
         checkout scm
         sh 'npm install'
+        sh 'npm install cypress'
       }
     }
 //     stage('Build') {
