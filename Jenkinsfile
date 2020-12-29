@@ -2,8 +2,9 @@ pipeline {
   agent any
 
   stages {
-    stage('Restore') {
+    stage('Checkout') {
       steps {
+        checkout scm
         sh 'npm install'
       }
     }
