@@ -17,15 +17,15 @@ pipeline {
 //         sh 'npm run-script build-and-start:prod'
 //       }
 //     }
-    stage('Unit Test') {
-      steps {
-        sh 'npm run-script test'
-      }
-    }
-//     stage('E2E Test') {
+//     stage('Unit Test') {
 //       steps {
-//         sh 'npm run-script e2e'
+//         sh 'npm run-script test'
 //       }
 //     }
+    stage('E2E Test') {
+      steps {
+        sh 'npm run-script cypress:run'
+      }
+    }
   }
 }
