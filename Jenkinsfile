@@ -19,12 +19,10 @@ pipeline {
         sh 'nohup npm run start:ci'
       }
     }
-    stage('cypress parallel tests'){
-      stage('tester A') {
-        steps {
-          echo 'Running build ${env.BUILD_ID}'
-          sh 'npm run e2e'
-        }
+    stage('cypress parallel tests') {
+      steps {
+        echo 'Running build ${env.BUILD_ID}'
+        sh 'npm run e2e'
       }
     }
   }
