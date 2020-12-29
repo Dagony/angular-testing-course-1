@@ -1,32 +1,38 @@
 pipeline {
   agent {
     docker {
-      image 'node:latest'
+      image 'cypress/base:10'
     }
   }
 
   stages {
-    stage('Checkout') {
+    stage('build') {
       steps {
         checkout scm
-        sh 'npm install'
+        echo "Running build ${env.BUILD_ID} on ${env.JENKINS_URL}"
+        sh 'npm ci'
+        sh 'npm run cy:verify'
       }
     }
-//     stage('Build') {
-//       steps {
-//         sh 'npm run-script build-and-start:prod'
-//       }
-//     }
-//     stage('Unit Test') {
-//       steps {
-//         sh 'npm run-script test'
-//       }
-//     }
-    stage('E2E Test') {
+    stage('start local server') {
       steps {
-        sh 'npm run-script cypress install'
-        sh 'npm run-script cypress:run'
+        sh 'nohup npm run start:ci'
       }
+    }
+    stage('cypress parallel tests'){
+      stage('tester A') {
+        steps {
+          echo 'Running build ${env.BUILD_ID}'
+          sh 'npm run e2e'
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      echo 'Stopping local server'
+      sh 'pkill -f http-server'
     }
   }
 }
