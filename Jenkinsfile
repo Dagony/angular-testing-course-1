@@ -16,7 +16,7 @@ pipeline {
     }
     stage('start local server') {
       steps {
-        sh 'nohup npm run build-and-start:prod'
+        sh 'nohup npm run build-and-start:prod &'
       }
     }
     stage('cypress parallel tests') {
