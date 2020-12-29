@@ -1,7 +1,6 @@
 pipeline {
-  agent {
-    docker 'node:14-alpine'
-  }
+  agent any
+
   stages {
     stage('Restore') {
       steps {
